@@ -1,5 +1,8 @@
 import numpy as np
 
+def calc_available(allocation, resources):
+    return resources - np.sum(allocation, axis=0)
+
 def is_safe_state(available, max_matrix, allocation):
     # NOTE 行列変換
     available = np.array(available)
@@ -50,14 +53,7 @@ def print_safe_sequence(safe_sequence):
         print(f"P{i+1}", end=" -> ")
 
 if __name__ == '__main__':
-    available = [3, 3, 2]
-    max_matrix = [
-        [7, 5, 3],
-        [3, 2, 2],
-        [9, 0, 2],
-        [2, 2, 2],
-        [4, 3, 3]
-    ]
+    resources = [10, 5, 7]
     allocation = [
         [0, 1, 0],
         [2, 0, 0],
@@ -65,6 +61,16 @@ if __name__ == '__main__':
         [2, 1, 1],
         [0, 0, 2]
     ]
+    max_matrix = [
+        [7, 5, 3],
+        [3, 2, 2],
+        [9, 0, 2],
+        [2, 2, 2],
+        [4, 3, 3]
+    ]
+
+    # NOTE 利用可能資源
+    available = calc_available(allocation, resources)
 
     is_safe, safe_sequence = is_safe_state(available, max_matrix, allocation)
 
