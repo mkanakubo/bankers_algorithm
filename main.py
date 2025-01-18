@@ -45,6 +45,10 @@ def is_safe_state(available, max_matrix, allocation):
 
     return True, np.array(safe_sequence, dtype=int)
 
+def print_safe_sequence(safe_sequence):
+    for i in safe_sequence:
+        print(f"P{i+1}", end=" -> ")
+
 if __name__ == '__main__':
     available = [3, 3, 2]
     max_matrix = [
@@ -66,6 +70,6 @@ if __name__ == '__main__':
 
     if is_safe:
         print("The system is in a safe state.")
-        print("Safe sequence:", safe_sequence.tolist())
+        print_safe_sequence(safe_sequence)
     else:
         print("The system is not in a safe state.")
