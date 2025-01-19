@@ -1,1 +1,1 @@
-# 銀行家のアルゴリズム (Banker Algorithm)
+# OS Algorithm
