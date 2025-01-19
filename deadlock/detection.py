@@ -86,7 +86,7 @@ def detect_deadlock(request_matrix, allocation_matrix, available_vector):
             break  # 実行可能なプロセスがない場合終了
 
     # デッドロック状態にあるプロセスを抽出
-    deadlocked_processes = [i for i in range(num_processes) if not finish[i]]
+    deadlocked_processes = [i+1 for i in range(num_processes) if not finish[i]]
     print("\n=== 検出結果 ===")
     if deadlocked_processes:
         print(f"デッドロック発生: プロセス {deadlocked_processes} がデッドロック状態")
@@ -101,7 +101,8 @@ if __name__ == '__main__':
     resource_nodes = [2, 2, 1]  # 各リソースノードに格納されているリソース数
     print(f"リソース総数: {resource_nodes}")
 
-    allocation_matrix = np.array([[0, 1, 0],
+    allocation_matrix = np.array([
+                                [0, 1, 0],
                                 [1, 0, 0],
                                 [0, 1, 0],
                                 [1, 0, 1]
@@ -110,11 +111,19 @@ if __name__ == '__main__':
     for i in range(len(allocation_matrix)):
         print(f"P{i}の保持リソース: {allocation_matrix[i]}")
 
-    request_matrix = np.array([[1, 0, 0],
-                             [0, 0, 0],
-                             [0, 0, 1],
-                             [0, 1, 0]
-                             ])
+    request_matrix = np.array([
+                            [1, 0, 0],
+                            [0, 0, 0],
+                            [0, 0, 1],
+                            [0, 1, 0]
+                            ])
+    deadlock_request_matrix = np.array([
+                                [1, 0, 0], # NOTE P4がR2に要求するリソースを2つにするとP3, P4がデッドロックする
+                                [0, 0, 0],
+                                [0, 0, 1],
+                                [0, 2, 0]
+                                ])
+
     print("\nリソース要求:")
     for i in range(len(request_matrix)):
         print(f"P{i+1}の要求リソース: {request_matrix[i]}")
@@ -125,16 +134,3 @@ if __name__ == '__main__':
 
     # デッドロック検出
     deadlocked = detect_deadlock(request_matrix, allocation_matrix, available_vector)
-
-    # テストデータ2（循環待ちの例）は以下コメントアウト
-    # resource_nodes = [1, 1, 1]  # 各リソースタイプのインスタンス数
-    # allocation_matrix = np.array([
-    #     [1, 0, 0],  # P0: R0を1つ保持
-    #     [0, 1, 0],  # P1: R1を1つ保持
-    #     [0, 0, 1],  # P2: R2を1つ保持
-    # ])
-    # request_matrix = np.array([
-    #     [0, 1, 0],  # P0: R1を1つ要求
-    #     [0, 0, 1],  # P1: R2を1つ要求
-    #     [1, 0, 0],  # P2: R0を1つ要求
-    # ])
